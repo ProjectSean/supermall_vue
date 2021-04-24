@@ -33,6 +33,7 @@ export default {
   .center {
     flex: 1;
     text-align: center;
+    font-size: 4.444vw;
   }
 }
 </style>

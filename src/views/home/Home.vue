@@ -1,16 +1,18 @@
 <template>
   <div id="home">
     <navigation class="home_nav">
-      <template v-slot:left></template>
       <template v-slot:center>购物街</template>
-      <template v-slot:right></template>
     </navigation>
+    <slide-show :banners="banners" />
+    <reco-view :recommends="recommends"></reco-view>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import Navigation from "components/common/navigation/NavBar.vue";
+import SlideShow from "./childComps/HomeSlideShow.vue";
+import RecoView from "./childComps/HomeRecoView";
 import { getHomeMultidata } from "network/home";
 export default {
   name: "Home",
@@ -22,6 +24,8 @@ export default {
   },
   components: {
     Navigation,
+    SlideShow,
+    RecoView,
   },
   created() {
     // 请求多个数据
