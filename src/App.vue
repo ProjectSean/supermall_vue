@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view />
-    <main-tab-bar></main-tab-bar>
+    <main-tab-bar style="z-index: 9"></main-tab-bar>
   </div>
 </template>
 

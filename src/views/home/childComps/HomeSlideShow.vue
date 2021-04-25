@@ -12,7 +12,7 @@
 import { Swiper, SwiperItem } from "components/common/swiper";
 
 export default {
-  name: "Home",
+  name: "SlideShow",
   props: {
     banners: {
       type: Array,
