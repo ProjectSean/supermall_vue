@@ -4,6 +4,14 @@
       <template v-slot:center>购物街</template>
     </navigation>
 
+    <tab-control
+      class="tab_control"
+      :titles="['流行', '新款', '精选']"
+      @tabClick="tabClick"
+      ref="tabControl_fixed"
+      v-show="isTabShow"
+    ></tab-control>
+
     <scroll
       class="content"
       ref="scroll"
@@ -12,14 +20,19 @@
       @scroll="contentScroll"
       @pullingUp="loadMore"
     >
-      <slide-show :banners="banners" />
+      <slide-show :banners="banners" @swiperImageLoad="swiperImageLoad" />
+
       <reco-view :recommends="recommends"></reco-view>
+
       <feature-view />
+
       <tab-control
         class="tab_control"
         :titles="['流行', '新款', '精选']"
         @tabClick="tabClick"
+        ref="tabControl"
       ></tab-control>
+
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
     <back-top @click="bsClick" v-show="isBackTopShow"></back-top>
@@ -49,9 +62,13 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] },
       },
+      currentIndex: 0,
       currentType: "pop",
       scroll: null,
       isBackTopShow: false,
+      tabOffsetTop: 0,
+      isTabShow: false,
+      saveY: 0,
     };
   },
   components: {
@@ -72,6 +89,17 @@ export default {
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
+  },
+  mounted() {
+    // 防抖处理
+  },
+  activated() {
+    this.$refs.scroll.scroll.scrollTo(0, this.saveY, 0);
+    this.$refs.scroll.scroll.refresh();
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroll.scroll.y;
+    console.log(this.saveY);
   },
   methods: {
     /*网络请求方法开始*/
@@ -94,17 +122,25 @@ export default {
     /*事件监听开始*/
     tabClick(index) {
       this.currentType = Object.keys(this.goods)[index];
+      // 为两个tab control栏保持一致
+      this.$refs.tabControl_fixed.currentIndex = index;
+      this.$refs.tabControl.currentIndex = index;
     },
     bsClick() {
       this.$refs.scroll.scrollTo(0, 0, 500);
     },
     contentScroll(pos) {
       this.isBackTopShow = -pos.y > 1000;
+      this.isTabShow = -pos.y > this.tabOffsetTop;
+      // console.log(pos.y);
     },
     loadMore() {
       this.getHomeGoods(this.currentType);
       // 处理bs计算高度的bug问题
       this.$refs.scroll.scroll.refresh();
+    },
+    swiperImageLoad() {
+      this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop;
     },
     /*事件监听结束*/
   },
@@ -113,34 +149,27 @@ export default {
       return this.goods[this.currentType].list;
     },
   },
+  watch() {},
 };
 </script>
 <style lang="less" scoped>
 #home {
-  padding-top: 12vw;
   height: 100vh;
   .home_nav {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
     background-color: var(--color-tint);
     color: #fff;
-    z-index: 9;
   }
   .tab_control {
-    position: sticky;
-    top: 12vw;
-    background-color: #fff;
+    position: relative;
+    margin-top: -1vw;
     z-index: 10;
+    background-color: #fff;
   }
-
   .content {
     overflow: hidden;
     position: absolute;
-    top: 6.6vh;
-    bottom: 6.6vh;
-    // height: 100%;
+    top: 12.1vw;
+    bottom: 8vw;
   }
 }
 </style>
