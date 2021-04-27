@@ -93,13 +93,16 @@ export default {
   mounted() {
     // 防抖处理
   },
+  unmounted() {
+    console.log("-----------");
+  },
   activated() {
-    this.$refs.scroll.scroll.scrollTo(0, this.saveY, 0);
-    this.$refs.scroll.scroll.refresh();
+    this.$refs.scroll.scrollTo(0, this.saveY, 0);
+
+    this.$refs.scroll.refresh();
   },
   deactivated() {
-    this.saveY = this.$refs.scroll.scroll.y;
-    console.log(this.saveY);
+    this.saveY = this.$refs.scroll.getScrollY();
   },
   methods: {
     /*网络请求方法开始*/
