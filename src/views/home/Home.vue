@@ -90,15 +90,9 @@ export default {
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
   },
-  mounted() {
-    // 防抖处理
-  },
-  unmounted() {
-    console.log("-----------");
-  },
+  unmounted() {},
   activated() {
     this.$refs.scroll.scrollTo(0, this.saveY, 0);
-
     this.$refs.scroll.refresh();
   },
   deactivated() {
