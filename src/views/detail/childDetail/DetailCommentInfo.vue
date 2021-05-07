@@ -50,12 +50,7 @@ export default {
       return formatDate(date, "yyyy-mm-dd");
     },
   },
-  computed: {
-    // showDate(time) {
-    //   const date = new Date(time * 1000);
-    //   return formatDate(date, "yyyy-mm-dd");
-    // },
-  },
+  computed: {},
 };
 </script>
 

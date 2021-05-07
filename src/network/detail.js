@@ -17,6 +17,9 @@ export class Goods {
     this.price = itemInfo.lowNowPrice;
     this.oldPrice = itemInfo.oldPrice;
     this.discount = itemInfo.discountDesc;
+    this.discountBgColor = itemInfo.discountDesc;
+    this.columns = columns
+    this.service = service
     // 深拷贝
     for (let item of columns) {
       this.columns.push(item)
